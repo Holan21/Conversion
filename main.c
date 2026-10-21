@@ -1,33 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-
+#define DEBUG true
 #define MAX_ELEMENTS 9
 
 int len = 256;
-
-bool DEBUG = true;
-
-int translate(char number){
-    if (number >='0' &&  number <= '9')  
-        return number - '0';
-    else if(number >= 'A' && number <= 'F'){
-        return number - 'A' + 10;
-    }else{
-        return -1;
-    }
-}
-
-int conversion_to10(int base, char* str ){
-    int result = 0;
-    //8^len * number[i] + 8^len-1 * number[i]  
-    for (int i =0; i < len; i++){
-        int dig = translate(str[i]);
-        result += pow(base, len - i) * dig;
-    }
-
-    return result;
-}
 
 void strcut(char** pre_allocated){
     int counter = 0;
@@ -59,6 +36,27 @@ void show(char* str){
         }
     }
     printf("\n");
+}
+
+int translate(char number){
+    if (number >='0' &&  number <= '9')  
+        return number - '0';
+    else if(number >= 'A' && number <= 'F'){
+        return number - 'A' + 10;
+    }else{
+        return -1;
+    }
+}
+
+int conversion_to10(int base, char* str ){
+    int result = 0;
+    //8^len * number[i] + 8^len-1 * number[i]  
+    for (int i =0; i < len; i++){
+        int dig = translate(str[i]);
+        result += pow(base, len - i) * dig;
+    }
+
+    return result;
 }
 
 
