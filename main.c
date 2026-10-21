@@ -2,11 +2,10 @@
 #include <stdlib.h>
 #include <math.h>
 
-// %D for int %f for float
-// result = (a + b-1) / b; formula for round up
-// page 128
+#define MAX_ELEMENTS 9
 
 int len = 256;
+
 bool DEBUG = true;
 
 int translate(char number){
@@ -23,12 +22,12 @@ int conversion_to10(int base, char* str ){
     int result = 0;
     //8^len * number[i] + 8^len-1 * number[i]  
     for (int i =0; i < len; i++){
-       int dig = translate(str[i]);
-       result += pow(base, len - i) * dig;
+        int dig = translate(str[i]);
+        result += pow(base, len - i) * dig;
     }
+
     return result;
 }
-
 
 void strcut(char** pre_allocated){
     int counter = 0;
@@ -37,7 +36,7 @@ void strcut(char** pre_allocated){
         counter++;    
 
     void* temp = realloc(*pre_allocated, counter + 1);
-    
+
     if (temp == NULL)
         return;
 
@@ -45,16 +44,19 @@ void strcut(char** pre_allocated){
     len = counter + 1;
 }
 
-void show(char* pre_allocated){
+void show(char* str){
     if (!DEBUG)
         return;
 
     for (int i = 0; i < len; i++){
-        if (pre_allocated[i] == '\0'){
-            printf("%d.%s ", i + 1, "END");
-            continue;
+        if (str[i] == '\0'){
+            printf("%5d.%5s ", i + 1, "END");
+        }else {
+            printf("%5d.%5c ", i + 1,str[i]);
         }
-        printf("%d.%c  ", i + 1,pre_allocated[i]);
+        if ((i + 1) % MAX_ELEMENTS == 0) {
+            printf("\n\r");
+        }
     }
     printf("\n");
 }
@@ -73,13 +75,9 @@ int main(void){
     show(octal);
     strcut(&octal); 
     show(octal);
-    
+
 
     int result= conversion_to10(16,octal);
-    if (result < 1){
-        printf("Cannot translate character");
-        return -3;
-    }
 
     printf("%d\n",result);
 
