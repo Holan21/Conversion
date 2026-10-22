@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+
 #define DEBUG true
 #define MAX_ELEMENTS 9
 
@@ -18,7 +19,7 @@ void strcut(char** pre_allocated){
         return;
 
     *pre_allocated = temp;
-    len = counter + 1;
+    len = counter;
 }
 
 void show(char* str){
@@ -53,7 +54,7 @@ int conversion_to10(int base, char* str ){
     //8^len * number[i] + 8^len-1 * number[i]  
     for (int i =0; i < len; i++){
         int dig = translate(str[i]);
-        result += pow(base, len - i) * dig;
+        result += pow(base, len - i - 1 ) * dig;
     }
 
     return result;
@@ -73,7 +74,6 @@ int main(void){
     show(octal);
     strcut(&octal); 
     show(octal);
-
 
     int result= conversion_to10(16,octal);
 
