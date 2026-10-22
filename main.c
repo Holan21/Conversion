@@ -51,7 +51,6 @@ int translate(char number){
 
 int conversion_to10(int base, char* str ){
     int result = 0;
-    //8^len * number[i] + 8^len-1 * number[i]  
     for (int i =0; i < len; i++){
         int dig = translate(str[i]);
         result += pow(base, len - i - 1 ) * dig;
