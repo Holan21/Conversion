@@ -1,13 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <string.h>
 
 #define DEBUG true
 #define MAX_ELEMENTS 9
-
+#define MAX_LENGTH 256
 int len = 256;
 
-void strcut(char** pre_allocated){
+int strcut(char** pre_allocated){
     int counter = 0;
 
     while ((*pre_allocated)[counter] != '\0')
@@ -16,10 +17,11 @@ void strcut(char** pre_allocated){
     void* temp = realloc(*pre_allocated, counter + 1);
 
     if (temp == NULL)
-        return;
+        return -1;
 
     *pre_allocated = temp;
-    len = counter;
+
+    return counter; 
 }
 
 void show(char* str){
@@ -55,10 +57,30 @@ int conversion_to10(int base, char* str ){
         int dig = translate(str[i]);
         result += pow(base, len - i - 1 ) * dig;
     }
-
     return result;
 }
 
+int conversion_from10(int base, int in, char* out){
+    char* result = calloc(MAX_LENGTH, sizeof(char));
+    int index = 0;
+
+    while(in > 0){
+        if (index > MAX_LENGTH)
+            return -1; 
+
+        result[index] = in % base - '0';
+        in = in / base;
+        index++; 
+    }
+    int size = strcut(&result);  
+
+    if (size < 0){
+        return -1;
+    }
+    out = result;
+
+    return size;
+}
 
 int main(void){
     char* octal = calloc(len, sizeof(char));
@@ -69,15 +91,19 @@ int main(void){
     }
 
     scanf("%255s", octal);
-
+/*
     show(octal);
-    strcut(&octal); 
+    len = strcut(&octal); 
     show(octal);
 
-    int result= conversion_to10(16,octal);
+    int result = conversion_to10(16,octal);
+*/
+    int i = 256;
+    char* result; 
+    conversion_from10(2,base, result); 
 
-    printf("%d\n",result);
-
+    printf("%s\n",result);
+    
     free(octal);
     octal = NULL;
 
